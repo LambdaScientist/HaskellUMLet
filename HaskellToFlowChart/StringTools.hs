@@ -1,4 +1,3 @@
-
 module StringTools where
 
 import Prelude

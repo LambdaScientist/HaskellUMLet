@@ -11,8 +11,14 @@ import Text.PrettyPrint
 import Text.PrettyPrint.HughesPJClass
 
 
-foo = If [TitlePath ("FOO1", bar),TitlePath ("FOO2", bar),TitlePath ("FOO3", bar) ]
+import Data.String.Utils
+
+foo = While "Do this" [TitlePath ("FOO1", bar),TitlePath ("FOO2", bar),TitlePath ("FOO3", bar) ]
+foo2 = If [TitlePath ("FOO1", Branch $ foo),TitlePath ("FOO2", bar),TitlePath ("FOO3", bar) ]
 
 bar = Node "Code" 
 
--- baz = foo [bar] 
+quickFoo = replace "        " "\t" $  prettyShow foo2
+
+
+writeFoo = writeFile "umlet.txt" quickFoo 

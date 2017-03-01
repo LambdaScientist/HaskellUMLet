@@ -26,18 +26,22 @@ instance Pretty Tree where
   pPrint (Branch uml) = pPrint uml
   pPrint (Node uml)   = pPrint uml
 
-
+type Condition = String
 data UMLetActiviyAIO = Empty 
                      | Cell Code UMLetActiviyAIO 
                      | If [Path] 
+                     | While Condition [Path]
                      deriving (Show)
 instance Pretty UMLetActiviyAIO where
   pPrint Empty = text ""
   pPrint (Cell code uml) = text code
                        $+$ pPrint uml
   pPrint (If paths) = text "If"
-                  $+$ foldl prettyAndMerge (text "") paths
+                  $+$ (nest 8 $ foldl prettyAndMerge (text "") paths)
                   $+$ text "EndIf"
+  pPrint (While cond paths) = text "While" <> text (nestString Bracket cond)
+                  $+$ (nest 8 $ foldl prettyAndMerge (text "") paths)
+                  
 
 prettyAndMerge :: Doc -> Path -> Doc 
 prettyAndMerge acc path = acc $+$ (pPrint path)
